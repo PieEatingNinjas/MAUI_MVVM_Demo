@@ -4,19 +4,17 @@ using SimpleMvvmDemo.Contracts.Services;
 
 namespace SimpleMvvmDemo.ViewModels
 {
-    public class MainPageViewModel :  IOnNavigatedFromAware, IOnNavigatedToAware, IOnNavigatingToAware
-    {
+    public class MainPageViewModel : NavigationViewModelBase,  IOnNavigatedFromAware, IOnNavigatedToAware, IOnNavigatingToAware
     {
         readonly IDataService _dataService;
-        readonly INavigationService _navigationService;
 
         public Command NavigateCommand
-            => new Command(async () => await _navigationService.Navigate("Second", "some id"));
+            => new Command(async () => await Navigate("Second", "some id"));
 
-        public MainPageViewModel(IDataService dataService, INavigationService navigationService)
+        public MainPageViewModel(IDataService dataService, INavigationService navigationService) 
+            : base(navigationService)
         {
             _dataService = dataService;
-            _navigationService = navigationService;
         }
 
         public Task OnNavigatedFrom(bool isForwardNavigation)

@@ -3,17 +3,13 @@ using MVVMaui.Contracts.Navigation;
 
 namespace SimpleMvvmDemo.ViewModels
 {
-    public class ThirdPageViewModel : IOnNavigatedFromAware, IOnNavigatedToAware, IOnNavigatingToAware
+    public class ThirdPageViewModel : NavigationViewModelBase, IOnNavigatedFromAware, IOnNavigatedToAware, IOnNavigatingToAware
     {
-        readonly INavigationService _navigationService;
-
         public Command GoBackCommand
-            => new Command(async () => await _navigationService.NavigateBack());
+            => new Command(async () => await NavigateBack());
 
-        public ThirdPageViewModel(INavigationService navigationService)
-        {
-            _navigationService = navigationService;
-        }
+        public ThirdPageViewModel(INavigationService navigationService) : base(navigationService)
+        { }
 
         public Task OnNavigatedFrom(bool isForwardNavigation)
         {
