@@ -1,5 +1,4 @@
-﻿using MVVMaui.Contracts;
-using MVVMaui.Contracts.Navigation;
+﻿using MVVMaui.Contracts.Navigation;
 using System.Diagnostics;
 
 namespace MVVMaui.Navigation
