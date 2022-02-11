@@ -1,0 +1,51 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SimpleMvvmDemo.SecondPage"
+             BackgroundColor="{DynamicResource SecondaryColor}">
+
+    <ScrollView>
+        <Grid RowSpacing="25" RowDefinitions="Auto,Auto,Auto,Auto,*"
+              Padding="{OnPlatform iOS='30,60,30,30', Default='30'}">
+
+            <Label 
+                Text="Second Page!"
+                Grid.Row="0"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                HorizontalOptions="Center" />
+
+            <Label 
+                Text="MVVM DEMO"
+                Grid.Row="1"
+                SemanticProperties.HeadingLevel="Level1"
+                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                FontSize="18"
+                HorizontalOptions="Center" />
+
+            <HorizontalStackLayout  Grid.Row="3" HorizontalOptions="Center"> 
+                <Button 
+                Text="Go back!"
+                FontAttributes="Bold"
+               
+                Command="{Binding GoBackCommand}"
+                HorizontalOptions="Center" />
+
+                <Button 
+                Text="Next"
+                FontAttributes="Bold"
+               
+                Command="{Binding NextCommand}"
+                HorizontalOptions="Center" />
+            </HorizontalStackLayout>
+                
+
+            <Image Grid.Row="4"
+                Source="dotnet_bot.png"
+                SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                WidthRequest="250"
+                HeightRequest="310"
+                HorizontalOptions="Center" />
+
+        </Grid>
+    </ScrollView>
+</ContentPage>
