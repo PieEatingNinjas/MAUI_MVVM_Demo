@@ -1,4 +1,6 @@
-﻿using SimpleMvvmDemo.Contracts.Services;
+﻿using MVVMaui.Contracts;
+using MVVMaui.Contracts.Navigation;
+using SimpleMvvmDemo.Contracts.Services;
 
 namespace SimpleMvvmDemo.ViewModels
 {

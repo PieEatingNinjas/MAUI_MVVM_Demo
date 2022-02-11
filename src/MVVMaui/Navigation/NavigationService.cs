@@ -1,11 +1,13 @@
-﻿using SimpleMvvmDemo.Contracts.Services;
-using SimpleMvvmDemo.ViewModels;
+﻿using MVVMaui.Contracts;
+using MVVMaui.Contracts.Navigation;
 using System.Diagnostics;
 
-namespace SimpleMvvmDemo.Services
+namespace MVVMaui.Navigation
 {
     public class NavigationService : INavigationService
     {
+        internal static IDictionary<string, Type> Registrations { get; } = new Dictionary<string, Type>();
+
         readonly IServiceProvider _services;
 
         protected INavigation Navigation
@@ -25,17 +27,11 @@ namespace SimpleMvvmDemo.Services
             }
         }
 
+        public Task Navigate(string name, object? parameter = null)
+            => NavigateToPage(name, parameter);
+
         public NavigationService(IServiceProvider services)
             => _services = services;
-
-        public Task NavigateToSecondPage(string id)
-            => NavigateToPage<SecondPage>(id);
-
-        public Task NavigateToThirdPage()
-            => NavigateToPage<ThirdPage>();
-
-        public Task NavigateToMainPage()
-            => NavigateToPage<MainPage>();
 
         public Task NavigateBack()
         {
@@ -45,37 +41,44 @@ namespace SimpleMvvmDemo.Services
             throw new InvalidOperationException("No pages to navigate back to!");
         }
 
-        private async Task NavigateToPage<T>(object? parameter = null) where T : Page
+        private async Task NavigateToPage(Page toPage, object? parameter)
         {
-            var toPage = ResolvePage<T>();
+            //Subscribe to the toPage's NavigatedTo event
+            toPage.NavigatedTo += Page_NavigatedTo;
 
-            if (toPage is not null)
+            //Get VM of the toPage
+            var toViewModel = GetPageViewModelBase(toPage);
+
+            //Call navigatingTo on VM, passing in the paramter
+            if (toViewModel is not null)
+                await toViewModel.OnNavigatingTo(parameter);
+
+            //Navigate to requested page
+            await Navigation.PushAsync(toPage, true);
+
+            //Subscribe to the toPage's NavigatedFrom event
+            toPage.NavigatedFrom += Page_NavigatedFrom;
+        }
+
+        private Task NavigateToPage(string name, object? parameter = null)
+        {
+            var registration = Registrations[name];
+            var page = _services.GetService(registration);
+
+            if (page is Page toPage)
             {
-                //Subscribe to the toPage's NavigatedTo event
-                toPage.NavigatedTo += Page_NavigatedTo;
-
-                //Get VM of the toPage
-                var toViewModel = GetPageViewModelBase(toPage);
-
-                //Call navigatingTo on VM, passing in the paramter
-                if (toViewModel is not null)
-                    await toViewModel.OnNavigatingTo(parameter);
-
-                //Navigate to requested page
-                await Navigation.PushAsync(toPage, true);
-
-                //Subscribe to the toPage's NavigatedFrom event
-                toPage.NavigatedFrom += Page_NavigatedFrom;
+                return NavigateToPage(toPage, parameter);
             }
             else
-                throw new InvalidOperationException($"Unable to resolve type {typeof(T).FullName}");
+                throw new InvalidOperationException($"Unable to resolve type {name}");
+
         }
 
         private async void Page_NavigatedFrom(object? sender, NavigatedFromEventArgs e)
         {
             //To determine forward navigation, we look at the 2nd to last item on the NavigationStack
             //If that entry equals the sender, it means we navigated forward from the sender to another page
-            bool isForwardNavigation = Navigation.NavigationStack.Count > 1 
+            bool isForwardNavigation = Navigation.NavigationStack.Count > 1
                 && Navigation.NavigationStack[^2] == sender;
 
             if (sender is Page thisPage)
@@ -113,8 +116,5 @@ namespace SimpleMvvmDemo.Services
 
         private ViewModelBase? GetPageViewModelBase(Page? p)
             => p?.BindingContext as ViewModelBase;
-
-        private T? ResolvePage<T>() where T : Page
-            => _services.GetService<T>();
     }
 }

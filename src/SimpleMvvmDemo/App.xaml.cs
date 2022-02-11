@@ -1,4 +1,4 @@
-﻿using SimpleMvvmDemo.Contracts.Services;
+﻿using MVVMaui.Contracts.Navigation;
 
 namespace SimpleMvvmDemo;
 
@@ -8,6 +8,6 @@ public partial class App : Application
 	{
 		InitializeComponent();
 		MainPage = new NavigationPage();
-		navigationService.NavigateToMainPage();
+		navigationService.Navigate("Main");
 	}
 }

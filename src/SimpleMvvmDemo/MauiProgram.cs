@@ -1,4 +1,5 @@
-﻿using SimpleMvvmDemo.Contracts.Services;
+﻿using MVVMaui;
+using SimpleMvvmDemo.Contracts.Services;
 using SimpleMvvmDemo.Services;
 using SimpleMvvmDemo.ViewModels;
 
@@ -16,14 +17,18 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 			});
 
-		builder.Services.AddSingleton<MainPage>();
+		builder.UseMVVMAUI(); //Register our navigation service
+
+		//Register pages by name (bit like Prism does, which I like)
+		builder.Services.AddPage<MainPage>("Main");
+		builder.Services.AddPage<SecondPage>("Second");
+		builder.Services.AddPage<ThirdPage>();
+
 		builder.Services.AddSingleton<MainPageViewModel>();
-		builder.Services.AddSingleton<IDataService, DataService>();
-		builder.Services.AddSingleton<SecondPage>();
 		builder.Services.AddSingleton<SecondPageViewModel>();
-		builder.Services.AddSingleton<ThirdPage>();
 		builder.Services.AddSingleton<ThirdPageViewModel>();
-		builder.Services.AddSingleton<INavigationService, NavigationService>();
+
+		builder.Services.AddSingleton<IDataService, DataService>();
 
 		return builder.Build();
 	}

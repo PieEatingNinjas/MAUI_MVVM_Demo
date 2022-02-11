@@ -1,4 +1,6 @@
-﻿using SimpleMvvmDemo.Contracts.Services;
+﻿using MVVMaui.Contracts;
+using MVVMaui.Contracts.Navigation;
+using SimpleMvvmDemo.Contracts.Services;
 
 namespace SimpleMvvmDemo.ViewModels
 {
@@ -8,7 +10,7 @@ namespace SimpleMvvmDemo.ViewModels
         readonly INavigationService _navigationService;
 
         public Command NavigateCommand
-            => new Command(async () => await _navigationService.NavigateToSecondPage("some id"));
+            => new Command(async () => await _navigationService.Navigate("Second", "some id"));
 
         public MainPageViewModel(IDataService dataService, INavigationService navigationService)
         {
