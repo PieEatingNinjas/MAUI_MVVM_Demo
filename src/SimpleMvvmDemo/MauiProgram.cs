@@ -11,13 +11,17 @@ public static class MauiProgram
 	{
 		var builder = MauiApp.CreateBuilder();
 		builder
+			.UseMVVMAUI() //Register our navigation service
 			.UseMauiApp<App>()
-			.ConfigureFonts(fonts =>
+        #region brainfarts
+            //.WithMainPage("Main") //would it be interesting to do something like this
+            //.WithMainPage<MainPage>() //or this?
+            //.UseMauiApp<App>("Main") //or this?
+        #endregion
+            .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 			});
-
-		builder.UseMVVMAUI(); //Register our navigation service
 
 		//Register pages by name (bit like Prism does, which I like)
 		builder.Services.AddPage<MainPage>("Main");
