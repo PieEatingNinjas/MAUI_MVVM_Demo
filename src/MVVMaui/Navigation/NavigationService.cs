@@ -113,6 +113,18 @@ namespace MVVMaui.Navigation
             return Task.CompletedTask;
         }
 
+        public Task Navigate<T>(object? parameter = null) where T : Page
+        {
+            var toPage = _services.GetService<T>();
+
+            if (toPage is not null)
+            {
+                return NavigateToPage(toPage, parameter);
+            }
+            else
+                throw new InvalidOperationException($"Unable to resolve type {typeof(T).FullName}");
+        }
+
         private T? GetPageViewModel<T>(Page? p) where T : class
             => p?.BindingContext as T;
     }

@@ -11,13 +11,10 @@ public static class MauiProgram
 	{
 		var builder = MauiApp.CreateBuilder();
 		builder
-			.UseMVVMAUI() //Register our navigation service
-			.UseMauiApp<App>()
-        #region brainfarts
-            //.WithMainPage("Main") //would it be interesting to do something like this
-            //.WithMainPage<MainPage>() //or this?
-            //.UseMauiApp<App>("Main") //or this?
-        #endregion
+			//.UseMVVMauiApp<App, NavigationPage, MainPage>()
+			//.UseMVVMauiApp<App, NavigationPage>("Main")
+			.UseMVVMauiApp<App>("Main")
+			//.UseMVVMauiApp<App, MainPage>()
             .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
