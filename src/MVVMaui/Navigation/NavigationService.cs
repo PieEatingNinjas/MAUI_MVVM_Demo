@@ -47,7 +47,7 @@ namespace MVVMaui.Navigation
             toPage.NavigatedTo += Page_NavigatedTo;
 
             //Get VM of the toPage
-            var toViewModel = GetPageViewModelBase(toPage);
+            var toViewModel = GetPageViewModel<IOnNavigatingToAware>(toPage);
 
             //Call navigatingTo on VM, passing in the paramter
             if (toViewModel is not null)
@@ -95,7 +95,7 @@ namespace MVVMaui.Navigation
 
         private Task CallNavigatedFrom(Page p, bool isForward)
         {
-            var fromViewModel = GetPageViewModelBase(p);
+            var fromViewModel = GetPageViewModel<IOnNavigatedFromAware>(p);
 
             if (fromViewModel is not null)
                 return fromViewModel.OnNavigatedFrom(isForward);
@@ -107,14 +107,14 @@ namespace MVVMaui.Navigation
 
         private Task CallNavigatedTo(Page? p)
         {
-            var fromViewModel = GetPageViewModelBase(p);
+            var fromViewModel = GetPageViewModel<IOnNavigatedToAware>(p);
 
             if (fromViewModel is not null)
                 return fromViewModel.OnNavigatedTo();
             return Task.CompletedTask;
         }
 
-        private ViewModelBase? GetPageViewModelBase(Page? p)
-            => p?.BindingContext as ViewModelBase;
+        private T? GetPageViewModel<T>(Page? p) where T : class
+            => p?.BindingContext as T;
     }
 }

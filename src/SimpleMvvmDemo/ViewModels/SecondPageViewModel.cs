@@ -3,7 +3,7 @@ using MVVMaui.Contracts.Navigation;
 
 namespace SimpleMvvmDemo.ViewModels
 {
-    public class SecondPageViewModel : ViewModelBase
+    public class SecondPageViewModel : IOnNavigatedFromAware, IOnNavigatedToAware, IOnNavigatingToAware
     {
         readonly INavigationService _navigationService;
 
@@ -18,22 +18,22 @@ namespace SimpleMvvmDemo.ViewModels
             _navigationService = navigationService;
         }
 
-        public override Task OnNavigatedFrom(bool isForwardNavigation)
+        public Task OnNavigatedFrom(bool isForwardNavigation)
         {
             Console.WriteLine($"On {(isForwardNavigation ? "forward" : "backward")} navigated from SecondPage");
-            return base.OnNavigatedFrom(isForwardNavigation);
+            return Task.CompletedTask;
         }
 
-        public override Task OnNavigatingTo(object? parameter)
+        public Task OnNavigatingTo(object? parameter)
         {
             Console.WriteLine($"On navigating to SecondPage with parameter {parameter}");
-            return base.OnNavigatingTo(parameter);
+            return Task.CompletedTask;
         }
 
-        public override Task OnNavigatedTo()
+        public Task OnNavigatedTo()
         {
             Console.WriteLine("On navigated to SecondPage");
-            return base.OnNavigatedTo();
+            return Task.CompletedTask;
         }
     }
 }

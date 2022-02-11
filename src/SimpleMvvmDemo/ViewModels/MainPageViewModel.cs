@@ -4,7 +4,8 @@ using SimpleMvvmDemo.Contracts.Services;
 
 namespace SimpleMvvmDemo.ViewModels
 {
-    public class MainPageViewModel : ViewModelBase
+    public class MainPageViewModel :  IOnNavigatedFromAware, IOnNavigatedToAware, IOnNavigatingToAware
+    {
     {
         readonly IDataService _dataService;
         readonly INavigationService _navigationService;
@@ -18,22 +19,22 @@ namespace SimpleMvvmDemo.ViewModels
             _navigationService = navigationService;
         }
 
-        public override Task OnNavigatedFrom(bool isForwardNavigation)
+        public Task OnNavigatedFrom(bool isForwardNavigation)
         {
             Console.WriteLine($"On {(isForwardNavigation ? "forward" : "backward")} navigated from MainPage");
-            return base.OnNavigatedFrom(isForwardNavigation);
+            return Task.CompletedTask;
         }
 
-        public override Task OnNavigatingTo(object? parameter)
+        public Task OnNavigatingTo(object? parameter)
         {
             Console.WriteLine($"On navigating to MainPage with parameter {parameter}");
-            return base.OnNavigatingTo(parameter);
+            return Task.CompletedTask;
         }
 
-        public override Task OnNavigatedTo()
+        public Task OnNavigatedTo()
         {
             Console.WriteLine("On navigated to MainPage");
-            return base.OnNavigatedTo();
+            return Task.CompletedTask;
         }
     }
 }
