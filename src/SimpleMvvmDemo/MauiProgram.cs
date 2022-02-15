@@ -16,13 +16,14 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 			});
 
-		builder.Services.AddSingleton<MainPage>();
-		builder.Services.AddSingleton<MainPageViewModel>();
+		builder.Services.AddTransient<MainPage>();
+		builder.Services.AddTransient<MainPageViewModel>();
+		builder.Services.AddTransient<SecondPage>();
+		builder.Services.AddTransient<SecondPageViewModel>();
+		builder.Services.AddTransient<ThirdPage>();
+		builder.Services.AddTransient<ThirdPageViewModel>();
+
 		builder.Services.AddSingleton<IDataService, DataService>();
-		builder.Services.AddSingleton<SecondPage>();
-		builder.Services.AddSingleton<SecondPageViewModel>();
-		builder.Services.AddSingleton<ThirdPage>();
-		builder.Services.AddSingleton<ThirdPageViewModel>();
 		builder.Services.AddSingleton<INavigationService, NavigationService>();
 
 		return builder.Build();
